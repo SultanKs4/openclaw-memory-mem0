@@ -2,19 +2,24 @@
   "id": "memory-mem0",
   "name": "Mem0 Memory",
   "description": "Long-term semantic memory via a self-hosted Mem0 REST API",
-  "version": "1.0.0",
+  "version": "0.0.5",
   "kind": "memory",
-  "author": "Serenichron",
+  "author": "Sultan Achmad",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SultanKs4/openclaw-memory-mem0"
+  },
   "configSchema": {
     "baseUrl": {
       "type": "string",
-      "default": "http://127.0.0.1:8420",
+      "default": "http://127.0.0.1:8000",
       "description": "Mem0 REST API base URL"
     },
     "userId": {
       "type": "string",
       "default": "openclaw",
-      "description": "User ID for memory storage"
+      "description": "User ID for memory partitioning"
     },
     "autoCapture": {
       "type": "boolean",
@@ -33,36 +38,71 @@
     },
     "recallThreshold": {
       "type": "number",
-      "default": 0.4,
+      "default": 0.5,
       "description": "Minimum relevance score for auto-recall (0.0-1.0)"
+    },
+    "customPrompt": {
+      "type": "string",
+      "default": null,
+      "description": "Custom prompt for memory extraction"
+    },
+    "memoryType": {
+      "type": "string",
+      "default": null,
+      "description": "Type of memory to store (e.g. 'core')"
+    },
+    "infer": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to extract facts from messages"
     }
   },
   "tools": [
     {
-      "name": "memory_recall",
-      "description": "Search long-term memory for relevant facts and context"
+      "name": "memory_search",
+      "description": "Search memories by natural language with scope and agent filters"
+    },
+    {
+      "name": "memory_list",
+      "description": "List all stored memories with scope and agent filters"
     },
     {
       "name": "memory_store",
-      "description": "Store a new fact or context in long-term memory"
+      "description": "Store a new fact or context in memory"
+    },
+    {
+      "name": "memory_get",
+      "description": "Retrieve a specific memory by ID"
     },
     {
       "name": "memory_forget",
-      "description": "Delete a specific memory by ID"
+      "description": "Delete a memory by ID or search query"
     }
   ],
   "cliCommands": [
     {
       "name": "mem0 search <query>",
-      "description": "Search long-term memory"
+      "description": "Search memories (--scope, --agent, --limit)"
     },
     {
       "name": "mem0 list",
-      "description": "List all stored memories"
+      "description": "List all stored memories (--scope, --agent)"
+    },
+    {
+      "name": "mem0 get <id>",
+      "description": "Get a memory by ID"
     },
     {
       "name": "mem0 forget <id>",
-      "description": "Delete a memory by ID"
+      "description": "Delete a memory by ID or query"
+    },
+    {
+      "name": "mem0 clear",
+      "description": "Delete all memories (--agent, --confirm)"
+    },
+    {
+      "name": "mem0 stats",
+      "description": "Show memory statistics (--agent)"
     }
   ]
 }
